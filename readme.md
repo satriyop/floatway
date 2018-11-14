@@ -89,4 +89,3 @@ CREATE    trainings/:id/comments   			POST      Add new comments to DB
 
 
 
-# floatway
