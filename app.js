@@ -2,73 +2,75 @@ var express 	= require("express"),
 	app 		= express(),
 	bodyParser 	= require("body-parser"),
 	mongoose 	= require("mongoose"),
-	Campground  = require("./models/campground"),
+	Training  	= require("./models/trainings"),
 	Comment     = require("./models/comment"),
 	seedDB		= require("./seeds")
 
-mongoose.connect("mongodb://localhost/yelp_camp");
+mongoose.connect("mongodb://localhost/floatway");
 
 app.use(bodyParser.urlencoded( {extended: true} ));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + '/public'));
+console.log(__dirname);
+
 
 seedDB();
 //=========================================================================
-// CAMPGROUND ROUTE
+// TRAINING ROUTE
 //=========================================================================
 
 
 app.get("/",function(req, res){
 	res.render("landing");
 });
-//INDEX - show all campgrounds
-app.get("/campgrounds", function(req, res){
-	// res.render("campgrounds", {listcamp:campgrounds});
-	//GET ALL CAMPGROUND FROM DB
-	Campground.find(function(err, allCampgrounds) {
+//INDEX - show all trainings
+app.get("/trainings", function(req, res){
+	//GET ALL TRAININGS FROM DB
+	Training.find(function(err, allTrainings) {
 		if (err){
 			console.log("Can not get data from DB")
 		} else {
-			res.render("campgrounds/index", {listcamp:allCampgrounds});			
+			res.render("trainings/index", {listTraining:allTrainings});			
 		}
 	});
 });
 
 //CREATE - add new campground to DB
-app.post("/campgrounds", function (req, res) {
+app.post("/trainings", function (req, res) {
 	//get data from form and add to campgrounds array
 	var name = req.body.name;
 	var image = req.body.image;
 	var desc = req.body.description;
-	var newCampground = {name: name, image:image, description: desc}
+	var newTraining = {name: name, image:image, description: desc}
 	// campgrounds.push(newCampground);
-	Campground.create(newCampground, function (err, campground){
+	Training.create(newTraining, function (err, training){
 		if (err) {
 			console.log(err);
 		} else {
-			console.log(`Newly Added Campground`);
-			console.log(campground);
-			//redirect back to campgrounds page
-			res.redirect("/campgrounds");
+			console.log(`Newly Added Training`);
+			console.log(training);
+			//redirect back to training page
+			res.redirect("/trainings");
 		}
 	});
 });
 
-//NEW - show form to add campground
-app.get("/campgrounds/new", function(req, res) {
-	res.render("campgrounds/new");
+//NEW - show form to add training
+app.get("/trainings/new", function(req, res) {
+	res.render("trainings/new");
 });
 
 
 //SHOW by id
-app.get("/campgrounds/:id", function(req, res) {
-	//find the campground with provided ID
-	Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
+app.get("/trainings/:id", function(req, res) {
+	//find the training with provided ID at the url
+	Training.findById(req.params.id).populate("comments").exec(function(err, foundTraining) {
 		if (err) {
-			console.log("Error finding the campground ID");
+			console.log("Error finding the training ID");
 		} else {
-			//show template with that campground
-			console.log(foundCampground);			
-			res.render("campgrounds/show", {showCamp: foundCampground});
+			//show template with that training
+			console.log(foundTraining);			
+			res.render("trainings/show", {showTraining: foundTraining});
 		}
 	});
 });
@@ -79,22 +81,22 @@ app.get("/campgrounds/:id", function(req, res) {
 //=========================================================================
 
 //NEW - show form to add comment
-app.get("/campgrounds/:id/comments/new", function(req, res) {
-	//find campground by id
-	Campground.findById(req.params.id, function(err, foundCampground) {
+app.get("/trainings/:id/comments/new", function(req, res) {
+	//find training by id
+	Training.findById(req.params.id, function(err, foundTraining) {
 		if (err) {
 			console.log(err);
 		} else {
-			res.render("comments/new", {campground: foundCampground});
+			res.render("comments/new", {campground: foundTraining});
 
 		}
 	});
 });
 
 
-app.post("/campgrounds/:id/comments", function(req, res) {
-	//lookup campground using ID
-	Campground.findById(req.params.id, function(err, foundCampground){
+app.post("/trainings/:id/comments", function(req, res) {
+	//lookup training using ID at url
+	Training.findById(req.params.id, function(err, foundTraining){
 		if (err) {
 			console.log(err);
 		} else {
@@ -104,11 +106,11 @@ app.post("/campgrounds/:id/comments", function(req, res) {
 				if (err) {
 					console.log(err);
 				} else {
-					//connect new comment to campground
-					foundCampground.comments.push(comment);
-					foundCampground.save();
+					//connect new comment to training
+					foundTraining.comments.push(comment);
+					foundTraining.save();
 					//redirect to show page	
-					res.redirect('/campgrounds/' + foundCampground._id);
+					res.redirect('/trainings/' + foundTraining._id);
 				}	
 			});
 		}
@@ -120,7 +122,7 @@ app.post("/campgrounds/:id/comments", function(req, res) {
 
 
 
-app.listen(3000, () => console.log('YelCamp app listening on port 3000!'));
+app.listen(3000, () => console.log('floatway app listening on port 3000!'));
 
 
 

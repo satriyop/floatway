@@ -1,49 +1,55 @@
 var mongoose 	= require("mongoose");
-var Campground 	= require("./models/campground");
+var Training 	= require("./models/trainings");
 var Comment 	= require("./models/comment"); 
 
 var data = [
 	{
-		name: "Surabaya",
-		image: "https://www.divergenttravelers.com/wp-content/uploads/2016/10/edit-7790-.jpg",
+		name: "Blockchain",
+		image: "https://ethelo.com/wp-content/uploads/2018/02/Blockchain.jpg",
 		description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt odit saepe, quisquam molestiae enim assumenda, architecto reiciendis amet iure, fuga dolorum sequi laborum quam voluptatibus tempora alias magnam maxime iste."
 	},
 
 	{
-		name: "Yogyakarta",
-		image: "https://www.divergenttravelers.com/wp-content/uploads/2016/10/edit-7790-.jpg",
+		name: "Optimasi 3G",
+		image: "https://uidesign.gbtcdn.com/gb_blog/2843/global-network-types.png",
 		description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus ratione cumque, aut quia ipsam accusamus impedit ipsa ex officiis placeat accusantium, aperiam animi modi suscipit repellendus id maiores maxime! Natus!"
 	},
 	{
-		name: "Semarang",
-		image: "https://www.divergenttravelers.com/wp-content/uploads/2016/10/edit-7790-.jpg",
+		name: "Machine Learning",
+		image: "https://cdn-images-1.medium.com/max/1600/1*60gs-SFYyooZZBxatuoNJw.jpeg",
 		description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem corrupti in voluptates eveniet quia consequuntur perspiciatis nesciunt, cum impedit amet aliquam reprehenderit laudantium ratione harum voluptatibus, nobis expedita iusto. Eos."
 	},
+	
+	{
+		name: "Artificial Intelligence",
+		image: "https://cdn-images-1.medium.com/max/800/1*rchGC6ySU1CEezcLEMJkzg.jpeg",
+		description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem corrupti in voluptates eveniet quia consequuntur perspiciatis nesciunt, cum impedit amet aliquam reprehenderit laudantium ratione harum voluptatibus, nobis expedita iusto. Eos."
+	}
 
 ];
 
 function seedDB() {
-	Campground.remove({}, function(err) {
+	Training.remove({}, function(err) {
 		if (err) {
 			console.log (err);
 		} else {
-			console.log("removed campground!")
+			console.log("removed training!")
 		}
 		//add campgrounds
-		data.forEach(function(seed){
-			Campground.create(seed, function(err, newCampground) {
+		data.forEach(function(training){
+			Training.create(training, function(err, newTraining) {
 				if (err) {
 					console.log (err);
 				} else {
-					console.log("Added new campground!")
+					console.log("Added new training!")
 					//add Comment
-					Comment.create({text: "This is cool", author: "Paijo"}, function (err, newComment) {
+					Comment.create({text: "This training is cool", author: "Lingga"}, function (err, newComment) {
 						if (err) {
 							console.log (err);
 						} else {
 							console.log("Added new comment!");
-							newCampground.comments.push(newComment);
-							newCampground.save();
+							newTraining.comments.push(newComment);
+							newTraining.save();
 						}
 					});
 				}

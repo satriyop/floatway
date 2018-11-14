@@ -1,18 +1,18 @@
-#YelpCamp
+#Floatway
 
 * Add Landing Page
-* Add Campground Page that lists all campground
+* Add Training Page that lists all campground
 
 
-Each campground has
+Each training has
 * Name
 * Image
 
 [
-	{name: "Yogyakarta", image: "http://www.image.com"}
-	{name: "Yogyakarta", image: "http://www.image.com"}
-	{name: "Yogyakarta", image: "http://www.image.com"}
-	{name: "Yogyakarta", image: "http://www.image.com"}
+	{name: "Blockchain", image: "http://www.image.com", description: "lorem"}
+	{name: "Optimize 3G", image: "http://www.image.com, description: "lorem""}
+	{name: "Machine Learning", image: "http://www.image.com", description: "lorem"}
+	{name: "Artificial Intelligence", image: "http://www.image.com", description: "lorem"}
 ]
 
 RESTFUL ROUTE
@@ -20,16 +20,16 @@ RESTFUL ROUTE
 CAMPGROUND
 name      url                   verb      desc
 =====================================================
-INDEX     campgrounds           GET       Display all campgrounds from DB
-NEW       campgrounds/new       GET       Display form to add campgrounds that later add to DB
-CREATE    campgrounds           POST      Add new campground to DB
-SHOW      campgrounds/:id       GET       Show info about one (1) campground
+INDEX     trainings   	        GET       Display all trainings from DB
+NEW       trainings/new 	    GET       Display form to add trainings that later add to DB
+CREATE    trainings         	POST      Add new trainings to DB
+SHOW      trainings/:id       	GET       Show info about one (1) trainings
 
 COMMENT
 name      url                   			verb      desc
 =========================================================================
-NEW       campgrounds/:id/comments/new   	GET       Display form to add campgrounds that later add to DB
-CREATE    campgrounds/:id/comments   		POST      Add new campground to DB
+NEW       trainings/:id/comments/new   		GET       Display form to add comments on training that later add to DB
+CREATE    trainings/:id/comments   			POST      Add new comments to DB
 
 
 #Layout and basic styling
@@ -37,24 +37,24 @@ CREATE    campgrounds/:id/comments   		POST      Add new campground to DB
 * Add in bootstrap
 
 
-#Creating New Campgrounds
+#Creating New Trainings
 * Setup new campgrounds route
 * Add in body parser
 * Setup route to show form
 * Add basic unstyled form
 
-#Style the campground page
+#Style the training page
 * Add a better header/title
-* Make campgrounds display in a grid
+* Make training display in a grid
 
 #Style the Navbar and Form
 * Add a Navbar to all template
-* Style the new campground form
+* Style the new training form
 
 #Add Mongoose
 * installing & Config Mongoose
-* Setup campground Model
-* Use campground Model to our Routes
+* Setup training Model
+* Use training Model to our Routes
 
 #Show Page 
 * Review RESTful routes we've seen
@@ -73,7 +73,7 @@ CREATE    campgrounds/:id/comments   		POST      Add new campground to DB
 
 #Add Comment Model
 * Make error go
-* Display comment on campground show
+* Display comment on training show
 
 #Comment New/Create
 * Discuss nested route
