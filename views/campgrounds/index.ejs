@@ -1,0 +1,35 @@
+
+<% include ../partials/header %>
+
+<div class="container">
+	<div class="container">
+		<div class="jumbotron">
+		  <h1 class="display-4">Welcome to Raptek Warehouse System!</h1>
+		  <p class="lead">Our hand picked locations.</p>
+		  <hr class="my-4">
+		  <div class="container">
+			  <p>Add yours to our site !.</p>
+			  <a class="btn btn-primary btn-lg" href="campgrounds/new" role="button">Add New DOP Warehouse</a>
+		  </div>	  
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row text-center"  style="display: flex; flex-wrap: wrap;">
+			<% listcamp.forEach(function(element){ %>
+				<div class="col-md-3 col-sm-6">
+					<div class ="thumbnail">
+						<img src="<%= element.image %>" > 
+						<div class="caption">
+								<h4><%= element.name %></h4>
+						</div>
+						<a href="/campgrounds/<%= element._id %>" class="btn btn-info"> More Info </a>
+						<a href="/campgrounds/<%= element._id %>/comments/new" class="btn btn-info"> Comment </a>
+
+					</div>	
+				</div>
+			<% }) %>
+		</div>
+	</div>
+
+<% include ../partials/footer %>

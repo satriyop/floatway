@@ -1,0 +1,43 @@
+<% include ../partials/header %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead"> Raptek Warehouse </p>
+			<div class="list-group">
+				<li class="list-group-item active">Info 1</li>
+				<li class="list-group-item">Info 2</li>
+				<li class="list-group-item">Info 3</li>
+			</div>
+		</div>
+
+		<div class="col-md-9">
+			<div class="thumbnail">
+				<img class="img-responsive" src="<%= showCamp.image %>"
+				<div class="caption-full">
+					<h4 class="pull-right"> PIC : Bedjo </h4>
+					<h4><a><%= showCamp.name %></a></h4>
+					<p> <%= showCamp.description %></p>
+				</div> 
+			</div>
+			<div class="well">
+				<div class="text-right">
+					<a href="/campgrounds/<%= showCamp._id %>/comments/new" class="btn btn-success"> Comment </a>
+				</div>
+				<% showCamp.comments.forEach(function(element){ %>
+					<div class="row"> 
+						<div class="col-md-12">
+							<%= element.author %>
+							<span class="pull-right"> 10 days ago </span>
+							<p> 
+								<%= element.text %>
+							</p>
+						</div>
+					</div>
+				<% }) %>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<% include ../partials/footer %>
