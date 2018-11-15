@@ -7,13 +7,27 @@
 Each training has
 * Name
 * Image
+* Description
+* Trainer
+
+
 
 [
-	{name: "Blockchain", image: "http://www.image.com", description: "lorem"}
-	{name: "Optimize 3G", image: "http://www.image.com, description: "lorem""}
-	{name: "Machine Learning", image: "http://www.image.com", description: "lorem"}
-	{name: "Artificial Intelligence", image: "http://www.image.com", description: "lorem"}
+	{name: "Blockchain", image: "http://www.image.com", description: "lorem", trainer: "Joni"}
+	{name: "Optimize 3G", image: "http://www.image.com, description: "lorem", trainer: "Alex"}
+	{name: "Machine Learning", image: "http://www.image.com", description: "lorem", trainer: "Felix"}
+	{name: "Artificial Intelligence", image: "http://www.image.com", description: "lorem", trainer: "rizky"}
 ]
+
+
+#Data Association
+
+#Data Reference
+
+
+
+
+
 
 RESTFUL ROUTE
 
@@ -81,7 +95,21 @@ CREATE    trainings/:id/comments   			POST      Add new comments to DB
 * Add the new comment form
 
 
+#Authentication
+* Tools for authentication
+	* Passport
+	* Passport Local
+	* Passport Local Mongoose
+	* Auth Flow
+	* Expess-session
+* Add Register routes
+* Add Register form
 
+* Add Login routes
+* Add Login Form
+
+* Add Logout routes
+* Add isLoggedIn Middleware
 
 
 

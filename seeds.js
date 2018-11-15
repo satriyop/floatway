@@ -1,5 +1,5 @@
 var mongoose 	= require("mongoose");
-var Training 	= require("./models/trainings");
+var Training 	= require("./models/training");
 var Comment 	= require("./models/comment"); 
 
 var data = [
@@ -35,7 +35,7 @@ function seedDB() {
 		} else {
 			console.log("removed training!")
 		}
-		//add campgrounds
+		//add trainings
 		data.forEach(function(training){
 			Training.create(training, function(err, newTraining) {
 				if (err) {
