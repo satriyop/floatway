@@ -14,9 +14,17 @@
 			<div class="thumbnail">
 				<img class="img-responsive" src="<%= showTraining.image %>"/>
 				<div class="caption-full">
-					<h4 class="pull-right"> PIC : Bedjo </h4>
+					<h4 class="pull-right"> Price : 1234 </h4>
 					<h4><a><%= showTraining.name %></a></h4>
 					<p> <%= showTraining.description %></p>
+					<p>
+						<em>Trainer : <%= showTraining.trainer.username %> </em> 
+					</p>
+					<a class="btn btn-warning" href="/trainings/<%= showTraining._id %>/edit">Edit</a>
+					<form action="/trainings/<%= showTraining._id %>?_method=DELETE" method="POST">
+						<button class="btn btn-danger">Delete Training</button>
+					</form>	
+
 				</div>
 			</div>
 

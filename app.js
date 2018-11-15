@@ -4,6 +4,7 @@ const express		= require("express"),
 	mongoose		= require("mongoose"),
 	passport		= require('passport'),
 	LocalStrategy 	= require('passport-local'),
+	methodOverride	= require('method-override'),
 	Training  		= require("./models/training"),
 	User			= require('./models/user'),
 	Comment     	= require("./models/comment"),
@@ -19,6 +20,8 @@ mongoose.connect("mongodb://localhost/floatway");
 app.use(bodyParser.urlencoded( {extended: true} ));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
+
+app.use(methodOverride('_method'));
 // console.log(__dirname);
 
 

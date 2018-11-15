@@ -21,19 +21,27 @@ router.get("/", function(req, res){
 });
 
 //CREATE - add new campground to DB
-router.post("/", function (req, res) {
+router.post("/",isLoggedIn, function (req, res) {
 	//get data from form and add to training array
 	const name = req.body.name;
 	const image = req.body.image;
 	const desc = req.body.description;
-	const newTraining = {name: name, image:image, description: desc}
+	const trainer = {
+		id: req.user._id,
+		username: req.user.username
+	}
+
+	const newTraining = {name: name, image:image, description: desc, trainer:trainer}
+	
+	// console.log(req.user);
+
 	// trainings.push(newCampground);
 	Training.create(newTraining, function (err, training){
 		if (err) {
 			console.log(err);
 		} else {
 			console.log(`Newly Added Training`);
-			console.log(training);
+			console.log(training); 
 			//redirect back to training page
 			res.redirect("/trainings");
 		}
@@ -41,7 +49,7 @@ router.post("/", function (req, res) {
 });
 
 //NEW - show form to add training
-router.get("/new", function(req, res) {
+router.get("/new",isLoggedIn, function(req, res) {
 	res.render("trainings/new");
 });
 
@@ -59,5 +67,57 @@ router.get("/:id", function(req, res) {
 		}
 	});
 });
+
+
+//EDIT TRAINING ROUTE
+router.get('/:id/edit', (req,res) => {
+	Training.findById(req.params.id, (err, foundTraining) => {
+		if(err) {
+			res.redirect('/trainings')
+		} else {
+			res.render('trainings/edit', {training: foundTraining});
+		}
+	})
+});
+
+//UPDATE TRAINING ROUTE
+router.put('/:id', (req,res) => {
+	//find and update the correct training
+	//const data = {name:req.body.name, image: req.body.image, description: req.body.description}
+	Training.findByIdAndUpdate(req.params.id, req.body.training, (err, updatedTraining) => {
+		console.log(req.body.training);
+		if(err) {
+			console.log(err);
+			res.redirect('/trainings');
+		} else {
+			console.log(updatedTraining);
+			res.redirect(`/trainings/${req.params.id}`);
+		}
+	})
+	//redirect to show page
+	
+})
+
+//DESTROY TRAINING ROUTE
+router.delete('/:id', (req,res) => {
+	//find and delete selected training
+	// res.send('Delete Training?')
+	Training.findByIdAndRemove(req.params.id, (err) => {
+		if(err) {
+			console.log(err);
+		} else {
+			// console.log(res);
+			res.redirect('/trainings');
+		}
+	});
+});
+
+//DEFINE MIDDLEWARE IS LOGIN
+function isLoggedIn(req,res,next) {
+	if(req.isAuthenticated()) {
+		return next()
+	}	
+	res.redirect('/login');
+}
 
 module.exports = router;
