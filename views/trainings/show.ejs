@@ -20,10 +20,13 @@
 					<p>
 						<em>Trainer : <%= showTraining.trainer.username %> </em> 
 					</p>
-					<a class="btn btn-warning" href="/trainings/<%= showTraining._id %>/edit">Edit</a>
-					<form action="/trainings/<%= showTraining._id %>?_method=DELETE" method="POST">
-						<button class="btn btn-danger">Delete Training</button>
-					</form>	
+					<% if(currentUser && showTraining.trainer.id.equals(currentUser._id)) { %>
+						<a class="btn btn-xs btn-warning" href="/trainings/<%= showTraining._id %>/edit">Edit</a> 
+						<form class="delete-form" action="/trainings/<%= showTraining._id %>?_method=DELETE" method="POST">
+						<button  class="btn btn-xs btn-danger">Delete</button>
+						</form>	
+					<% } %>
+
 
 				</div>
 			</div>
@@ -34,14 +37,20 @@
 					<a href="/trainings/<%= showTraining._id %>/comments/new" class="btn btn-success"> Comment </a>
 				</div>
 				<hr>
-				<% showTraining.comments.forEach(function(element){ %>
+				<% showTraining.comments.forEach(function(comment){ %>
 					<div class="row"> 
 						<div class="col-md-12">
-							<strong> <%= element.author.username %> </strong>
+							<strong> <%= comment.author.username %> </strong>
 							<span class="pull-right"> 10 days ago </span>
 							<p>
-								<%= element.text %>
+								<%= comment.text %>  
 							</p>
+							<% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+							<a class="btn btn-xs btn-warning" href="/trainings/<%= showTraining._id %>/comments/<%= comment._id %>/edit">Edit</a>
+							<form class ="delete-form" action="/trainings/<%= showTraining._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+								<input type="submit" class="btn btn-xs btn-danger" value="Delete">
+							</form>
+							<% } %>
 						</div>
 					</div>
 				<% }) %>

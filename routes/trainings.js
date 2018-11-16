@@ -6,6 +6,7 @@
 const express = require('express');
 const router = express.Router();
 const Training = require('../models/training');
+const middleware = require('../middleware');
 
 //INDEX - show all trainings
 router.get("/", function(req, res){
@@ -21,7 +22,7 @@ router.get("/", function(req, res){
 });
 
 //CREATE - add new campground to DB
-router.post("/",isLoggedIn, function (req, res) {
+router.post("/",middleware.isLoggedIn, function (req, res) {
 	//get data from form and add to training array
 	const name = req.body.name;
 	const image = req.body.image;
@@ -49,7 +50,7 @@ router.post("/",isLoggedIn, function (req, res) {
 });
 
 //NEW - show form to add training
-router.get("/new",isLoggedIn, function(req, res) {
+router.get("/new",middleware.isLoggedIn, function(req, res) {
 	res.render("trainings/new");
 });
 
@@ -70,18 +71,14 @@ router.get("/:id", function(req, res) {
 
 
 //EDIT TRAINING ROUTE
-router.get('/:id/edit', (req,res) => {
-	Training.findById(req.params.id, (err, foundTraining) => {
-		if(err) {
-			res.redirect('/trainings')
-		} else {
-			res.render('trainings/edit', {training: foundTraining});
-		}
-	})
+router.get('/:id/edit',middleware.checkTrainingOwnership, (req,res) => {
+	//check if user logged in, if not redirect
+	Training.findById(req.params.id, (err, foundTraining) => { 
+		res.render('trainings/edit', {training: foundTraining});
+	});
 });
-
 //UPDATE TRAINING ROUTE
-router.put('/:id', (req,res) => {
+router.put('/:id',middleware.checkTrainingOwnership, (req,res) => {
 	//find and update the correct training
 	//const data = {name:req.body.name, image: req.body.image, description: req.body.description}
 	Training.findByIdAndUpdate(req.params.id, req.body.training, (err, updatedTraining) => {
@@ -99,7 +96,7 @@ router.put('/:id', (req,res) => {
 })
 
 //DESTROY TRAINING ROUTE
-router.delete('/:id', (req,res) => {
+router.delete('/:id',middleware.checkTrainingOwnership, (req,res) => {
 	//find and delete selected training
 	// res.send('Delete Training?')
 	Training.findByIdAndRemove(req.params.id, (err) => {
@@ -112,12 +109,5 @@ router.delete('/:id', (req,res) => {
 	});
 });
 
-//DEFINE MIDDLEWARE IS LOGIN
-function isLoggedIn(req,res,next) {
-	if(req.isAuthenticated()) {
-		return next()
-	}	
-	res.redirect('/login');
-}
 
 module.exports = router;

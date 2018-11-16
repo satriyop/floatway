@@ -31,20 +31,25 @@ Each training has
 
 RESTFUL ROUTE
 
-CAMPGROUND
+TRAINING
 name      url                   verb      desc
 =====================================================
 INDEX     trainings   	        GET       Display all trainings from DB
 NEW       trainings/new 	    GET       Display form to add trainings that later add to DB
 CREATE    trainings         	POST      Add new trainings to DB
 SHOW      trainings/:id       	GET       Show info about one (1) trainings
+EDIT	  trainings/:id/edit	GET		  Display form for edit training		
+UPDATE	  trainings/:id			PUT		  Update the edited training
+DESTROY	  trainings/:id			DELETE	  Delete Training
 
 COMMENT
-name      url                   			verb      desc
+name      url                   					verb      desc
 =========================================================================
-NEW       trainings/:id/comments/new   		GET       Display form to add comments on training that later add to DB
-CREATE    trainings/:id/comments   			POST      Add new comments to DB
-
+NEW       trainings/:id/comments/new   				GET       Display form to add comments @ training
+CREATE    trainings/:id/comments   					POST      Add new comments to DB
+EDIT	  trainings/:id/comments/:comment_id/edit	GET		  Display form to edit comment
+UPDATE	  trainings/:id/comments/:comment_id		PUT		  Update the edited comments @ training
+DESTROY	  trainings/:id/comments/:comment_id		DELETE	  Delete comment
 
 #Layout and basic styling
 * Create header and footer partials
@@ -110,10 +115,14 @@ CREATE    trainings/:id/comments   			POST      Add new comments to DB
 
 * Add Logout routes
 * Add isLoggedIn Middleware
+* Add checkTrainingOwnership Middleware
+* Add checkCommentOwnership Middleware
 
 
 
-
-
+# Middleware
+* isLoggedIn
+* checkTrainingOwnership
+* checkCommentOwnership
 
 
