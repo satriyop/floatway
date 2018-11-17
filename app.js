@@ -17,7 +17,9 @@ const commentRoutes 	= require('./routes/comments'),
       indexRoutes 		= require('./routes/index');
 
 // mongoose.connect("mongodb://localhost/floatway");
-mongoose.connect("mongodb://satriyop:ann4lisa@ds147942.mlab.com:47942/floatway");
+
+mongoose.connect('mongodb://satriyop:ann4lisa@ds147942.mlab.com:47942/floatway', { useNewUrlParser: true });
+// mongoose.connect("mongodb://satriyop:ann4lisa@ds147942.mlab.com:47942/floatway");
 
 //mongodb://satriyop:ann4lisa@ds147942.mlab.com:47942/floatway
 
