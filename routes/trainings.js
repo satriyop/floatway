@@ -6,7 +6,20 @@
 const express = require('express');
 const router = express.Router();
 const Training = require('../models/training');
+const NodeGeocoder = require('node-geocoder');
+
+//GEOCODER
+const options = {
+	provider: 'google',
+	httpAdapter: 'https',
+	apiKey: process.env.GEOCODER_API_KEY,
+	formatter: null
+  };
+   
+const geocoder = NodeGeocoder(options);
+
 const middleware = require('../middleware');
+
 
 //INDEX - show all trainings
 router.get("/", function(req, res){
@@ -25,28 +38,38 @@ router.get("/", function(req, res){
 router.post("/",middleware.isLoggedIn, function (req, res) {
 	//get data from form and add to training array
 	const name = req.body.name;
+	const price = req.body.price;
 	const image = req.body.image;
 	const desc = req.body.description;
 	const trainer = {
 		id: req.user._id,
 		username: req.user.username
-	}
-
-	const newTraining = {name: name, image:image, description: desc, trainer:trainer}
-	
-	// console.log(req.user);
-
-	// trainings.push(newCampground);
-	Training.create(newTraining, function (err, training){
-		if (err) {
+	};
+	geocoder.geocode(req.body.location, function (err, data) {
+		if (err || !data.length) {
 			console.log(err);
-		} else {
-			console.log(`Newly Added Training`);
-			console.log(training); 
-			//redirect back to training page
-			res.redirect("/trainings");
+		//   req.flash('error', 'Invalid address');
+		  return res.redirect('back');
 		}
-	});
+		console.log(data);
+		const lat = data[0].latitude;
+		const lng = data[0].longitude;
+		const location = data[0].formattedAddress;
+
+		const newTraining = {name: name, price: price, image:image, description: desc, trainer:trainer, location: location, lat: lat, lng: lng};
+	
+		// console.log(req.user);
+		Training.create(newTraining, function (err, training){
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(`Newly Added Training`);
+				console.log(training); 
+				//redirect back to training page
+				res.redirect("/trainings");
+			}
+		});
+	});	
 });
 
 //NEW - show form to add training
@@ -63,7 +86,7 @@ router.get("/:id", function(req, res) {
 			console.log("Error finding the training ID");
 		} else {
 			//show template with that training
-			// console.log(foundTraining);			
+			console.log(foundTraining);			
 			res.render("trainings/show", {showTraining: foundTraining});
 		}
 	});
@@ -79,20 +102,30 @@ router.get('/:id/edit',middleware.checkTrainingOwnership, (req,res) => {
 });
 //UPDATE TRAINING ROUTE
 router.put('/:id',middleware.checkTrainingOwnership, (req,res) => {
-	//find and update the correct training
-	//const data = {name:req.body.name, image: req.body.image, description: req.body.description}
-	Training.findByIdAndUpdate(req.params.id, req.body.training, (err, updatedTraining) => {
-		console.log(req.body.training);
-		if(err) {
+	//Geocoder
+	geocoder.geocode(req.body.location, function (err, data) {
+		if (err || !data.length) {
+			// req.flash('error', 'Invalid address');
 			console.log(err);
-			res.redirect('/trainings');
-		} else {
-			console.log(updatedTraining);
-			res.redirect(`/trainings/${req.params.id}`);
+			return res.redirect('back');
 		}
-	})
+		req.body.training.lat = data[0].latitude;
+		req.body.training.lng = data[0].longitude;
+		req.body.training.location = data[0].formattedAddress;	
+		//find and update the correct training
+		//const data = {name:req.body.name, image: req.body.image, description: req.body.description}
+		Training.findByIdAndUpdate(req.params.id, req.body.training, (err, updatedTraining) => {
+			console.log(req.body.training);
+			if(err) {
+				console.log(err);
+				res.redirect('/trainings');
+			} else {
+				console.log(updatedTraining);
+				res.redirect(`/trainings/${req.params.id}`);
+			}
+		})
 	//redirect to show page
-	
+	});
 })
 
 //DESTROY TRAINING ROUTE
@@ -108,6 +141,5 @@ router.delete('/:id',middleware.checkTrainingOwnership, (req,res) => {
 		}
 	});
 });
-
 
 module.exports = router;

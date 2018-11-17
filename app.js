@@ -2,6 +2,7 @@ const express		= require("express"),
 	app 			= express(),
 	bodyParser 		= require("body-parser"),
 	mongoose		= require("mongoose"),
+	moment 			= require('moment'),
 	passport		= require('passport'),
 	LocalStrategy 	= require('passport-local'),
 	methodOverride	= require('method-override'),
@@ -16,6 +17,8 @@ const commentRoutes 	= require('./routes/comments'),
       indexRoutes 		= require('./routes/index');
 
 mongoose.connect("mongodb://localhost/floatway");
+//process.env.databaseURL
+console.log(process.env.GEOCODER_API_KEY);
 
 app.use(bodyParser.urlencoded( {extended: true} ));
 app.set("view engine", "ejs");
@@ -34,6 +37,9 @@ app.use(require('express-session')({
 	resave: false,
 	saveUninitialized: false
 }));
+
+//Use moment for all views files
+app.locals.moment = moment;
 
 //using passport
 app.use(passport.initialize());

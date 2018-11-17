@@ -4,17 +4,18 @@
 		<div class="col-md-3">
 			<p class="lead"> Floatway Training </p>
 			<div class="list-group">
-				<li class="list-group-item active">Info 1</li>
-				<li class="list-group-item">Info 2</li>
-				<li class="list-group-item">Info 3</li>
+				<li class="list-group-item active">Prasyarat</li>
+				<li class="list-group-item">Lama Pelatihan</li>
+				<li class="list-group-item">Lokasi Pelatihan</li>
 			</div>
+			<div id="map"></div>
 		</div>
 
 		<div class="col-md-9">
 			<div class="thumbnail">
 				<img class="img-responsive" src="<%= showTraining.image %>"/>
 				<div class="caption-full">
-					<h4 class="pull-right"> Price : 1234 </h4>
+					<h4 class="pull-right">Rp. <%= showTraining.price %> </h4>
 					<h4><a><%= showTraining.name %></a></h4>
 					<p> <%= showTraining.description %></p>
 					<p>
@@ -40,8 +41,8 @@
 				<% showTraining.comments.forEach(function(comment){ %>
 					<div class="row"> 
 						<div class="col-md-12">
-							<strong> <%= comment.author.username %> </strong>
-							<span class="pull-right"> 10 days ago </span>
+							<strong> <%= comment.author.username %>, , <%= moment(showTraining.createdAt).fromNow() %> </strong>
+							<span class="pull-right"> <%= moment(comment.createdAt).fromNow() %> </span>
 							<p>
 								<%= comment.text %>  
 							</p>
@@ -59,6 +60,33 @@
 		</div>
 	</div>
 </div>
-
+<script>
+	function initMap() {
+	  var lat = <%= showTraining.lat %>;
+	  var lng = <%= showTraining.lng %>;
+	  var center = {lat: lat, lng: lng };
+	  var map = new google.maps.Map(document.getElementById('map'), {
+		  zoom: 8,
+		  center: center,
+		  scrollwheel: false
+	  });
+	  var contentString = `
+		<strong><%= showTraining.name %><br />
+		<%= showTraining.location %></strong>
+		<p><%= showTraining.description %></p>
+	  `
+	  var infowindow = new google.maps.InfoWindow({
+		content: contentString
+	  });
+	  var marker = new google.maps.Marker({
+		  position: center,
+		  map: map
+	  });
+	  marker.addListener('click', function() {
+		infowindow.open(map, marker);
+	  });
+	}
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_D7UQGeefBAfpI9RTteD20P87li6hW9M&callback=initMap"></script>
 
 <% include ../partials/footer %>
