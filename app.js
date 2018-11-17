@@ -16,7 +16,12 @@ const commentRoutes 	= require('./routes/comments'),
 	  trainingRoutes 	= require('./routes/trainings'),
       indexRoutes 		= require('./routes/index');
 
-mongoose.connect("mongodb://localhost/floatway");
+// mongoose.connect("mongodb://localhost/floatway");
+mongoose.connect("mongodb://satriyop:ann4lisa@ds147942.mlab.com:47942/floatway");
+
+//mongodb://satriyop:ann4lisa@ds147942.mlab.com:47942/floatway
+
+
 //process.env.databaseURL
 console.log(process.env.GEOCODER_API_KEY);
 
