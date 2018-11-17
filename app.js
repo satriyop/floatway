@@ -70,7 +70,10 @@ app.use(indexRoutes);
 app.use('/trainings',trainingRoutes);
 app.use('/trainings/:id/comments',commentRoutes);
 
-app.listen(3000, () => console.log('floatway app listening on port 3000!'));
+const PORT = process.env.PORT || 3000;
+// app.listen(PORT);
+
+app.listen(PORT, () => console.log('floatway app listening on port 3000!'));
 
 
 
