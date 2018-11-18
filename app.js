@@ -2,6 +2,7 @@ const express		= require("express"),
 	app 			= express(),
 	bodyParser 		= require("body-parser"),
 	mongoose		= require("mongoose"),
+	flash			= require('connect-flash'),
 	moment 			= require('moment'),
 	passport		= require('passport'),
 	LocalStrategy 	= require('passport-local'),
@@ -34,6 +35,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
 // console.log(__dirname);
 
+//using connect-flash for displaying messages
+app.use(flash());
 
 // seedDB();
 
@@ -63,6 +66,8 @@ passport.deserializeUser(User.deserializeUser());
 //middleware to pass currentUser object to every views
 app.use((req,res,next) => {
 	res.locals.currentUser = req.user;
+	res.locals.error = req.flash('error');
+	res.locals.success = req.flash('success');
 	next();
 });
 

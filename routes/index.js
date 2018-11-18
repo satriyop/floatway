@@ -14,7 +14,7 @@ router.get("/",function(req, res){
 
 //show register form
 router.get('/register', (req,res) => {
-	res.render('register');
+	res.render('register', {page: 'register'});
 });
 
 //handle the sign up/register post
@@ -23,10 +23,12 @@ router.post('/register', (req,res) => {
 	const newUserPassword = req.body.password;
 	User.register(newUser, newUserPassword, (err, user) => {
 		if (err) {
+			req.flash('error', err.message);
 			console.log(err);
-			return res.sender('register');
+			return res.redirect('register');
 		}
 		passport.authenticate('local')(req, res, ()=>{
+			req.flash('success', 'Welcome to Floatway Training Partner ' + user.username);
 			res.redirect('/trainings')
 		})
 	} )
@@ -34,14 +36,16 @@ router.post('/register', (req,res) => {
 
 //show login form
 router.get('/login', (req,res) => {
-	res.render('login');
+	res.render('login', {page: 'login'});
 });
 
 //handling login logic
 //use passport as middleware
 router.post('/login',passport.authenticate('local', {
 	successRedirect: '/trainings',
-	failureRedirect: '/login'
+	failureRedirect: '/login',
+	successFlash: 'Welcome to Floatway',
+	failureFlash: true
 }), (res,req) => {
 	
 })
@@ -50,6 +54,7 @@ router.post('/login',passport.authenticate('local', {
 //prevent comment if not logged in
 router.get('/logout', (req,res) => {
 	req.logout();
+	req.flash('success', "You are logged out");
 	res.redirect('/trainings');
 })
 

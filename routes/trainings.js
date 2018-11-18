@@ -29,7 +29,7 @@ router.get("/", function(req, res){
 		if (err){
 			console.log("Can not get data from DB")
 		} else {
-			res.render("trainings/index", {listTraining:allTrainings});			
+			res.render("trainings/index", {listTraining:allTrainings, page:'trainings'});			
 		}
 	});
 });
@@ -136,6 +136,7 @@ router.delete('/:id',middleware.checkTrainingOwnership, (req,res) => {
 		if(err) {
 			console.log(err);
 		} else {
+			req.flash('success', 'Training deleted');
 			// console.log(res);
 			res.redirect('/trainings');
 		}

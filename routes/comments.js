@@ -32,7 +32,8 @@ router.post("/", function(req, res) {
 			//create new comment
 			Comment.create(req.body.comment, function (err, comment) {
 				if (err) {
-					console.log(err);
+					req.flash('error', 'Ops, something went wrong');
+					// console.log(err);
 				} else {                    
 					//add username and id to comment
 					comment.author.id = req.user._id;
@@ -43,7 +44,8 @@ router.post("/", function(req, res) {
 					//add new comment to comments collections
 					foundTraining.comments.push(comment);
 					foundTraining.save();
-					console.log(comment);
+					// console.log(comment);
+					req.flash('success', 'Your comment is added');
 					//redirect to show page	
 					res.redirect('/trainings/' + foundTraining._id);
 				}	
@@ -84,6 +86,7 @@ router.delete('/:comment_id',middleware.checkCommentOwnership, (req,res) => {
 		if (err) {
 			res.redirect('back');
 		} else {
+			req.flash('success', 'comment deleted');
 			res.redirect('/trainings/' + req.params.id);
 		}
 	});

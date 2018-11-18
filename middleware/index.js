@@ -18,13 +18,15 @@ middlewareObj.checkTrainingOwnership = function  (req, res, next) {
 				if (foundTraining.trainer.id.equals (req.user.id)) {
 					next()
 				} else {
-					console.log('trainer is not authorized');
+					req.flash('error', 'You are not authorized!');
+					// console.log('trainer is not authorized');
 					res.redirect('back')
 				}
 			}
 		});
 	} else {
-		console.log('trainer need to be log in to edit');
+		req.flash('error', 'You need to be logged in to edit!')
+		// console.log('trainer need to be log in to edit');
 		res.redirect('back');
 	}
 }
@@ -34,6 +36,7 @@ middlewareObj.checkCommentOwnership = function  (req, res, next) {
 	if (req.isAuthenticated()) {
 		Comment.findById(req.params.comment_id, (err, foundComment) => {
 			if(err) {
+				req.flash('error', 'Training not found');
 				res.redirect('back')
 			} else {
 			//if logged in, does user owns comment, if so
@@ -43,7 +46,8 @@ middlewareObj.checkCommentOwnership = function  (req, res, next) {
 				if (foundComment.author.id.equals (req.user.id)) {
 					next()
 				} else {
-					console.log('user is not authorized');
+					req.flash('error', 'You are not authorized!');
+					// console.log('user is not authorized');
 					res.redirect('back')
 				}
 			}
@@ -57,7 +61,8 @@ middlewareObj.checkCommentOwnership = function  (req, res, next) {
 middlewareObj.isLoggedIn = function (req,res,next) {
 	if(req.isAuthenticated()) {
 		return next()
-	}	
+	}
+	req.flash('error', 'You are not logged in, yet!');	
 	res.redirect('/login');
 }
 
