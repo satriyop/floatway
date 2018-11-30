@@ -9,8 +9,10 @@ Each training has
 * Image
 * Description
 * Trainer
+* Comments
+* Reviews
 
-
+#seeding DB
 
 [
 	{name: "Blockchain", image: "http://www.image.com", description: "lorem", trainer: "Joni"}
@@ -23,11 +25,6 @@ Each training has
 #Data Association
 
 #Data Reference
-
-
-
-
-
 
 RESTFUL ROUTE
 
@@ -51,9 +48,20 @@ EDIT	  trainings/:id/comments/:comment_id/edit	GET		  Display form to edit comme
 UPDATE	  trainings/:id/comments/:comment_id		PUT		  Update the edited comments @ training
 DESTROY	  trainings/:id/comments/:comment_id		DELETE	  Delete comment
 
+REVIEW
+name      url                   					verb      desc
+=========================================================================
+NEW       trainings/:id/reviews/new   				GET       Display form to add comments @ training
+CREATE    trainings/:id/reviews   					POST      Add new comments to DB
+EDIT	  trainings/:id/reviews/:review_id/edit		GET		  Display form to edit comment
+UPDATE	  trainings/:id/reviews/:review_id			PUT		  Update the edited comments @ training
+DESTROY	  trainings/:id/reviews/:review_id			DELETE	  Delete comment
+
+
+
 #Layout and basic styling
 * Create header and footer partials
-* Add in bootstrap
+* Add in bootstrap, jQuery, font
 
 
 #Creating New Trainings
